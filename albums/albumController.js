@@ -1,9 +1,9 @@
-const Album = require("./album.model");
+const albumService = require("./albumService");
 
 // CREATE ALBUM
 const createAlbum = async (req, res) => {
     try {
-        const album = await Album.create(req.body);
+        const album = await albumService.createAlbum(req.body);
         res.status(201).json(album);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -13,7 +13,7 @@ const createAlbum = async (req, res) => {
 // GET ALL ALBUMS
 const getAllAlbums = async (req, res) => {
     try {
-        const albums = await Album.findAll();
+        const albums = await albumService.getAllAlbums();
         res.json(albums);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -23,7 +23,7 @@ const getAllAlbums = async (req, res) => {
 // GET ONE ALBUM
 const getAlbumById = async (req, res) => {
     try {
-        const album = await Album.findByPk(req.params.id);
+        const album = await albumService.getAlbumById(req.params.id);
         if (!album) return res.status(404).json({ message: "Album not found" });
         res.json(album);
     } catch (err) {
@@ -34,10 +34,9 @@ const getAlbumById = async (req, res) => {
 // UPDATE ALBUM
 const updateAlbum = async (req, res) => {
     try {
-        const album = await Album.findByPk(req.params.id);
+        const album = await albumService.updateAlbum(req.params.id, req.body);
         if (!album) return res.status(404).json({ message: "Album not found" });
 
-        await album.update(req.body);
         res.json(album);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -47,10 +46,9 @@ const updateAlbum = async (req, res) => {
 // DELETE ALBUM
 const deleteAlbum = async (req, res) => {
     try {
-        const album = await Album.findByPk(req.params.id);
-        if (!album) return res.status(404).json({ message: "Album not found" });
+        const result = await albumService.deleteAlbum(req.params.id);
+        if (!result) return res.status(404).json({ message: "Album not found" });
 
-        await album.destroy();
         res.json({ message: "Album deleted successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });

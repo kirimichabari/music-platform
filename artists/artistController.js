@@ -1,9 +1,9 @@
-const Artist = require("./artist.model");
+const artistService = require("./artistService");
 
 // CREATE ARTIST
 const createArtist = async (req, res) => {
     try {
-        const artist = await Artist.create(req.body);
+        const artist = await artistService.createArtist(req.body);
         res.status(201).json(artist);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -13,7 +13,7 @@ const createArtist = async (req, res) => {
 // GET ALL ARTISTS
 const getAllArtists = async (req, res) => {
     try {
-        const artists = await Artist.findAll();
+        const artists = await artistService.getAllArtists();
         res.json(artists);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -23,7 +23,7 @@ const getAllArtists = async (req, res) => {
 // GET ONE ARTIST
 const getArtistById = async (req, res) => {
     try {
-        const artist = await Artist.findByPk(req.params.id);
+        const artist = await artistService.getArtistById(req.params.id);
         if (!artist) return res.status(404).json({ message: "Artist not found" });
         res.json(artist);
     } catch (err) {
@@ -34,10 +34,9 @@ const getArtistById = async (req, res) => {
 // UPDATE ARTIST
 const updateArtist = async (req, res) => {
     try {
-        const artist = await Artist.findByPk(req.params.id);
+        const artist = await artistService.updateArtist(req.params.id, req.body);
         if (!artist) return res.status(404).json({ message: "Artist not found" });
 
-        await artist.update(req.body);
         res.json(artist);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -47,10 +46,9 @@ const updateArtist = async (req, res) => {
 // DELETE ARTIST
 const deleteArtist = async (req, res) => {
     try {
-        const artist = await Artist.findByPk(req.params.id);
-        if (!artist) return res.status(404).json({ message: "Artist not found" });
+        const result = await artistService.deleteArtist(req.params.id);
+        if (!result) return res.status(404).json({ message: "Artist not found" });
 
-        await artist.destroy();
         res.json({ message: "Artist deleted successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });

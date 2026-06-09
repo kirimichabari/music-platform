@@ -1,9 +1,9 @@
-const Playlist = require("./playlist.model");
+const playlistService = require("./playlistService");
 
 // CREATE PLAYLIST
 const createPlaylist = async (req, res) => {
     try {
-        const playlist = await Playlist.create(req.body);
+        const playlist = await playlistService.createPlaylist(req.body);
         res.status(201).json(playlist);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -13,7 +13,7 @@ const createPlaylist = async (req, res) => {
 // GET ALL PLAYLISTS
 const getAllPlaylists = async (req, res) => {
     try {
-        const playlists = await Playlist.findAll();
+        const playlists = await playlistService.getAllPlaylists();
         res.json(playlists);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -23,7 +23,7 @@ const getAllPlaylists = async (req, res) => {
 // GET ONE PLAYLIST
 const getPlaylistById = async (req, res) => {
     try {
-        const playlist = await Playlist.findByPk(req.params.id);
+        const playlist = await playlistService.getPlaylistById(req.params.id);
         if (!playlist) return res.status(404).json({ message: "Playlist not found" });
         res.json(playlist);
     } catch (err) {
@@ -34,10 +34,9 @@ const getPlaylistById = async (req, res) => {
 // UPDATE PLAYLIST
 const updatePlaylist = async (req, res) => {
     try {
-        const playlist = await Playlist.findByPk(req.params.id);
+        const playlist = await playlistService.updatePlaylist(req.params.id, req.body);
         if (!playlist) return res.status(404).json({ message: "Playlist not found" });
 
-        await playlist.update(req.body);
         res.json(playlist);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -47,10 +46,9 @@ const updatePlaylist = async (req, res) => {
 // DELETE PLAYLIST
 const deletePlaylist = async (req, res) => {
     try {
-        const playlist = await Playlist.findByPk(req.params.id);
-        if (!playlist) return res.status(404).json({ message: "Playlist not found" });
+        const result = await playlistService.deletePlaylist(req.params.id);
+        if (!result) return res.status(404).json({ message: "Playlist not found" });
 
-        await playlist.destroy();
         res.json({ message: "Playlist deleted successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });

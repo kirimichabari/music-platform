@@ -1,9 +1,9 @@
-const Song = require("./song.model");
+const songService = require("./songService");
 
 // CREATE SONG
 const createSong = async (req, res) => {
     try {
-        const song = await Song.create(req.body);
+        const song = await songService.createSong(req.body);
         res.status(201).json(song);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -13,7 +13,7 @@ const createSong = async (req, res) => {
 // GET ALL SONGS
 const getAllSongs = async (req, res) => {
     try {
-        const songs = await Song.findAll();
+        const songs = await songService.getAllSongs();
         res.json(songs);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -23,7 +23,7 @@ const getAllSongs = async (req, res) => {
 // GET ONE SONG
 const getSongById = async (req, res) => {
     try {
-        const song = await Song.findByPk(req.params.id);
+        const song = await songService.getSongById(req.params.id);
         if (!song) return res.status(404).json({ message: "Song not found" });
         res.json(song);
     } catch (err) {
@@ -34,10 +34,9 @@ const getSongById = async (req, res) => {
 // UPDATE SONG
 const updateSong = async (req, res) => {
     try {
-        const song = await Song.findByPk(req.params.id);
+        const song = await songService.updateSong(req.params.id, req.body);
         if (!song) return res.status(404).json({ message: "Song not found" });
 
-        await song.update(req.body);
         res.json(song);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -47,10 +46,9 @@ const updateSong = async (req, res) => {
 // DELETE SONG
 const deleteSong = async (req, res) => {
     try {
-        const song = await Song.findByPk(req.params.id);
-        if (!song) return res.status(404).json({ message: "Song not found" });
+        const result = await songService.deleteSong(req.params.id);
+        if (!result) return res.status(404).json({ message: "Song not found" });
 
-        await song.destroy();
         res.json({ message: "Song deleted successfully" });
     } catch (err) {
         res.status(500).json({ error: err.message });
