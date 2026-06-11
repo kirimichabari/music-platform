@@ -9,10 +9,10 @@ const {
     deleteAlbum
 } =require("./albumController");
 
-router.post("/albums", createAlbum);
-router.get("/albums", getAllAlbums);
-router.get("/albums/:id", getAlbumById);
-router.put("/albums/:id", updateAlbum);
-router.delete("/albums/:id", deleteAlbum);
+router.post("/", createAlbum);
+router.get("/", getAllAlbums);
+router.get("/:id", getAlbumById);
+router.put("/:id", updateAlbum);
+router.delete("/:id", deleteAlbum);
 
 module.exports = router;

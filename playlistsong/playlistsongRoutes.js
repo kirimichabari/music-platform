@@ -3,13 +3,13 @@ const router = express.Router();
 
 const controller = require("./playlistsongController");
 
-// ADD SONG
+// CREATE
 router.post("/", controller.addSongToPlaylist);
 
 // GET ALL
 router.get("/", controller.getAllPlaylistSongs);
 
-// DELETE
-router.delete("/:id", controller.removeSongFromPlaylist);
+// DELETE (IMPORTANT — current version we are fixing)
+router.delete("/:playlist_id/:song_id", controller.removeSongFromPlaylist);
 
 module.exports = router;

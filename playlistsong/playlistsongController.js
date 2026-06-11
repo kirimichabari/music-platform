@@ -23,7 +23,10 @@ exports.getAllPlaylistSongs = async (req, res) => {
 // REMOVE SONG FROM PLAYLIST
 exports.removeSongFromPlaylist = async (req, res) => {
     try {
-        const deleted = await playlistSongService.removeSongFromPlaylist(req.params.id);
+        const deleted = await playlistSongService.removeSongFromPlaylist(
+            req.body.playlist_id,
+            req.body.song_id
+        );
 
         if (!deleted) {
             return res.status(404).json({ message: "Not found" });

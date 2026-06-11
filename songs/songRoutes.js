@@ -10,10 +10,10 @@ const {
 } =require("./songController");
 
 // CRUD ROUTES
-router.post("/songs", createSong);
-router.get("/songs", getAllSongs);
-router.get("/songs/:id", getSongById);
-router.put("/songs/:id", updateSong);
-router.delete("/songs/:id", deleteSong);
+router.post("/", createSong);
+router.get("/", getAllSongs);
+router.get("/:id", getSongById);
+router.put("/:id", updateSong);
+router.delete("/:id", deleteSong);
 
 module.exports = router;

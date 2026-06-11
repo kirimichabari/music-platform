@@ -10,10 +10,10 @@ const {
 } = require("./playlistController");
 
 // CRUD ROUTES
-router.post("/playlists", createPlaylist);
-router.get("/playlists", getAllPlaylists);
-router.get("/playlists/:id", getPlaylistById);
-router.put("/playlists/:id", updatePlaylist);
-router.delete("/playlists/:id", deletePlaylist);
+router.post("/", createPlaylist);
+router.get("/", getAllPlaylists);
+router.get("/:id", getPlaylistById);
+router.put("/:id", updatePlaylist);
+router.delete("/:id", deletePlaylist);
 
 module.exports = router;

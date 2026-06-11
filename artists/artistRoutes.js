@@ -1,18 +1,19 @@
 const express = require("express");
 const router = express.Router();
-const artistController = require("./artistController");
+
 const {
     createArtist,
     getAllArtists,
     getArtistById,
     updateArtist,
     deleteArtist
-} = require("./artistController")
+} = require("./artistController");
 
-router.post("/artists", createArtist);
-router.get("/artists", getAllArtists);
-router.get("/artists/:id", getArtistById);
-router.put("/artists/:id", updateArtist);
-router.delete("/artists/:id", deleteArtist);
+// ✅ FIXED ROUTES
+router.post("/", createArtist);
+router.get("/", getAllArtists);
+router.get("/:id", getArtistById);
+router.put("/:id", updateArtist);
+router.delete("/:id", deleteArtist);
 
 module.exports = router;

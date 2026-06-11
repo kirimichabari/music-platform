@@ -19,11 +19,9 @@ const getUserPlayHistory = async (userId) => {
 
 // DELETE
 const deletePlayHistory = async (id) => {
-    const deleted = await PlayHistory.destroy({
-        where: { id }
+    return await PlayHistory.destroy({
+        where: { play_id: id }
     });
-
-    return deleted; // number of rows deleted
 };
 
 module.exports = {

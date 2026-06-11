@@ -11,12 +11,13 @@ const getAllPlaylistSongs = async () => {
 };
 
 // REMOVE SONG FROM PLAYLIST
-const removeSongFromPlaylist = async (id) => {
-    const deleted = await PlaylistSong.destroy({
-        where: { id }
+const removeSongFromPlaylist = async (playlistId, songId) => {
+    return await PlaylistSong.destroy({
+        where: {
+            playlist_id: playlistId,
+            song_id: songId
+        }
     });
-
-    return deleted; // number of rows deleted
 };
 
 module.exports = {

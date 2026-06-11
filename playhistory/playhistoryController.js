@@ -33,14 +33,14 @@ exports.getUserPlayHistory = async (req, res) => {
 // DELETE
 exports.deletePlayHistory = async (req, res) => {
     try {
-        const deleted = await playHistoryService.deletePlayHistory(req.params.id);
+        const result = await playHistoryService.deletePlayHistory(req.params.id);
 
-        if (!deleted) {
-            return res.status(404).json({ message: "Not found" });
+        if (!result) {
+            return res.status(404).json({ message: "Play history not found" });
         }
 
-        res.status(200).json({ message: "Deleted successfully" });
+        res.json({ message: "Play history deleted successfully" });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({ error: err.message });
     }
 };
