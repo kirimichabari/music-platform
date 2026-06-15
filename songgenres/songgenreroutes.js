@@ -9,10 +9,7 @@ router.post("/", controller.createSongGenre);
 // GET ALL
 router.get("/", controller.getAllSongGenres);
 
-// GET ONE
-router.get("/:id", controller.getSongGenreById);
-
-// DELETE
-router.delete("/:id", controller.deleteSongGenre);
+// DELETE (composite key)
+router.delete("/:song_id/:genre_id", controller.deleteSongGenre);
 
 module.exports = router;
