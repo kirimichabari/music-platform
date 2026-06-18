@@ -3,31 +3,28 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('Artists', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
+      artist_id: {
+        type: Sequelize.INTEGER,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        autoIncrement: true
       },
+
       name: {
         type: Sequelize.STRING,
         allowNull: false
       },
+
       bio: {
         type: Sequelize.TEXT
       },
-      createdAt: {
-        allowNull: false,
-        type: Sequelize.DATE
-      },
-      updatedAt: {
-        allowNull: false,
-        type: Sequelize.DATE
+
+      country: {
+        type: Sequelize.STRING
       }
     });
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
     await queryInterface.dropTable('Artists');
   }
 };

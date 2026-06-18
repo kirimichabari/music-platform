@@ -1,18 +1,17 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
 
-const SongGenre = sequelize.define("SongGenre", {
-    song_id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true
-    },
-
+const Genre = sequelize.define("Genre", {
     genre_id: {
         type: DataTypes.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true
+    },
+
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
     }
-}, {
-    timestamps: false
 });
 
-module.exports = SongGenre;
+module.exports = Genre;
