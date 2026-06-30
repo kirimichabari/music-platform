@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const authMiddleware = require("../auth/authMiddleware");
+
 const {
     createArtist,
     getAllArtists,
@@ -9,11 +11,11 @@ const {
     deleteArtist
 } = require("./artistController");
 
-// ✅ FIXED ROUTES
-router.post("/", createArtist);
-router.get("/", getAllArtists);
-router.get("/:id", getArtistById);
-router.put("/:id", updateArtist);
-router.delete("/:id", deleteArtist);
+// CRUD ROUTES
+router.post("/", authMiddleware, createArtist);
+router.get("/", authMiddleware, getAllArtists);
+router.get("/:id", authMiddleware, getArtistById);
+router.put("/:id", authMiddleware, updateArtist);
+router.delete("/:id", authMiddleware, deleteArtist);
 
 module.exports = router;

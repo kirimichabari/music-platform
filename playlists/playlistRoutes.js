@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
+const authMiddleware = require("../auth/authMiddleware");
+
 const {
     createPlaylist,
     getAllPlaylists,
@@ -10,10 +12,10 @@ const {
 } = require("./playlistController");
 
 // CRUD ROUTES
-router.post("/", createPlaylist);
-router.get("/", getAllPlaylists);
-router.get("/:id", getPlaylistById);
-router.put("/:id", updatePlaylist);
-router.delete("/:id", deletePlaylist);
+router.post("/", authMiddleware, createPlaylist);
+router.get("/", authMiddleware, getAllPlaylists);
+router.get("/:id", authMiddleware, getPlaylistById);
+router.put("/:id", authMiddleware, updatePlaylist);
+router.delete("/:id", authMiddleware, deletePlaylist);
 
 module.exports = router;

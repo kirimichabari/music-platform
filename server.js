@@ -14,6 +14,7 @@ const artistRoutes = require("./artists/artistRoutes");
 const albumRoutes = require("./albums/albumRoutes");
 const playhistoryRoutes = require("./playhistory/playhistoryRoutes");
 const playlistsongRoutes = require("./playlistsong/playlistsongRoutes");
+const authRoutes = require("./auth/authRoutes");
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use("/api/playhistory", playhistoryRoutes);
 app.use("/api/genres", genreRoutes);
 app.use("/api/songgenres", songgenreRoutes);
 app.use("/api/playlistsong", playlistsongRoutes);
+app.use("/api/auth", authRoutes);
 
 app.get("/", (req, res) => {
     res.send("KenyaBeats Server Running");

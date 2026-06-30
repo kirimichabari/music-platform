@@ -1,21 +1,22 @@
 const express = require("express");
 const router = express.Router();
 
+const authMiddleware = require("../auth/authMiddleware");
 const genreController = require("./genrecontroller");
 
 // CREATE
-router.post("/", genreController.createGenre);
+router.post("/", authMiddleware, genreController.createGenre);
 
 // READ ALL
-router.get("/", genreController.getAllGenres);
+router.get("/", authMiddleware, genreController.getAllGenres);
 
 // READ ONE
-router.get("/:id", genreController.getGenreById);
+router.get("/:id", authMiddleware, genreController.getGenreById);
 
 // UPDATE
-router.put("/:id", genreController.updateGenre);
+router.put("/:id", authMiddleware, genreController.updateGenre);
 
 // DELETE
-router.delete("/:id", genreController.deleteGenre);
+router.delete("/:id", authMiddleware, genreController.deleteGenre);
 
 module.exports = router;

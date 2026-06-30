@@ -1,19 +1,21 @@
 const express = require("express");
 const router = express.Router();
 
+const authMiddleware = require("../auth/authMiddleware");
+
 const {
     createSong,
     getAllSongs,
     getSongById,
     updateSong,
     deleteSong
-} =require("./songController");
+} = require("./songController");
 
 // CRUD ROUTES
-router.post("/", createSong);
-router.get("/", getAllSongs);
-router.get("/:id", getSongById);
-router.put("/:id", updateSong);
-router.delete("/:id", deleteSong);
+router.post("/", authMiddleware, createSong);
+router.get("/", authMiddleware, getAllSongs);
+router.get("/:id", authMiddleware, getSongById);
+router.put("/:id", authMiddleware, updateSong);
+router.delete("/:id", authMiddleware, deleteSong);
 
 module.exports = router;
