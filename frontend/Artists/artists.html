@@ -8,10 +8,53 @@
 </head>
 <body>
 
+    <nav>
+        <h1>MusicHub</h1>
+
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Songs/songs.html">Songs</a></li>
+            <li><a href="../Artists/artists.html">Artists</a></li>
+            <li><a href="../Albums/albums.html">Albums</a></li>
+            <li><a href="../Playlists/playlists.html">Playlists</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
     <h1>All Artists</h1>
+
+    <form id="artist-form">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Artist Name"
+            required
+        >
+
+        <input
+            type="text"
+            id="country"
+            placeholder="Country"
+            required
+        >
+
+        <textarea
+            id="bio"
+            placeholder="Artist Bio"
+            rows="4"
+            required
+        ></textarea>
+
+        <button type="submit" id="submit-btn">
+            Add Artist
+        </button>
+
+    </form>
 
     <div id="artists-container"></div>
 
     <script src="artists.js"></script>
+
 </body>
 </html>

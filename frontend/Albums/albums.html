@@ -8,10 +8,52 @@
 </head>
 <body>
 
+    <nav>
+        <h1>MusicHub</h1>
+
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Songs/songs.html">Songs</a></li>
+            <li><a href="../Artists/artists.html">Artists</a></li>
+            <li><a href="../Albums/albums.html">Albums</a></li>
+            <li><a href="../Playlists/playlists.html">Playlists</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
     <h1>All Albums</h1>
+
+    <form id="album-form">
+
+        <input
+            type="text"
+            id="title"
+            placeholder="Album Title"
+            required
+        >
+
+        <input
+            type="date"
+            id="release_date"
+            required
+        >
+
+        <input
+            type="number"
+            id="artist_id"
+            placeholder="Artist ID"
+            required
+        >
+
+        <button type="submit" id="submit-btn">
+            Add Album
+        </button>
+
+    </form>
 
     <div id="albums-container"></div>
 
     <script src="albums.js"></script>
+
 </body>
 </html>

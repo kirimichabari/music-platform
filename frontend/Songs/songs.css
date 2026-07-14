@@ -1,21 +1,81 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
+    font-family: Arial, sans-serif;
     background-color: #111;
     color: white;
 }
 
-h1 {
-    text-align: center;
+/* Navigation */
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #1a1a1a;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.nav-links a:hover {
     color: red;
 }
 
+/* Heading */
+h1 {
+    text-align: center;
+    color: red;
+    margin-top: 30px;
+}
+
+/* Form */
+#song-form {
+    width: 500px;
+    margin: 30px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#song-form input {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+#song-form button {
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: red;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#song-form button:hover {
+    background-color: darkred;
+}
+
+/* Song Cards */
 #songs-container {
+    width: 90%;
+    margin: 40px auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    margin-top: 30px;
 }
 
 .song-card {

@@ -8,10 +8,44 @@
 </head>
 <body>
 
+    <nav>
+        <h1>MusicHub</h1>
+
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Songs/songs.html">Songs</a></li>
+            <li><a href="../Artists/artists.html">Artists</a></li>
+            <li><a href="../Albums/albums.html">Albums</a></li>
+            <li><a href="../Playlists/playlists.html">Playlists</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
     <h1>All Songs</h1>
+
+    <form id="song-form">
+
+        <input type="text" id="title" placeholder="Song Title" required>
+
+        <input type="number" id="duration" placeholder="Duration" required>
+
+        <input type="date" id="release_date" required>
+
+        <input type="number" id="artist_id" placeholder="Artist ID" required>
+
+        <input type="number" id="album_id" placeholder="Album ID" required>
+
+        <button type="submit" id="submit-btn">Add Song</button>
+
+    </form>
 
     <div id="songs-container"></div>
 
+    <!-- Shared authentication functions -->
+    <script src="../js/auth.js"></script>
+
+    <!-- Songs functionality -->
     <script src="songs.js"></script>
+
 </body>
 </html>

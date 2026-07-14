@@ -8,10 +8,46 @@
 </head>
 <body>
 
+    <nav>
+        <h1>MusicHub</h1>
+
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Songs/songs.html">Songs</a></li>
+            <li><a href="../Artists/artists.html">Artists</a></li>
+            <li><a href="../Albums/albums.html">Albums</a></li>
+            <li><a href="../Playlists/playlists.html">Playlists</a></li>
+            <li><a href="../dashboard.html">Dashboard</a></li>
+        </ul>
+    </nav>
+
     <h1>All Playlists</h1>
+
+    <form id="playlist-form">
+
+        <input
+            type="text"
+            id="name"
+            placeholder="Playlist Name"
+            required
+        >
+
+        <input
+            type="number"
+            id="user_id"
+            placeholder="User ID"
+            required
+        >
+
+        <button type="submit" id="submit-btn">
+            Add Playlist
+        </button>
+
+    </form>
 
     <div id="playlists-container"></div>
 
     <script src="playlists.js"></script>
+
 </body>
 </html>

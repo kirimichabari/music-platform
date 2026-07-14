@@ -1,35 +1,173 @@
+console.log("albums.js is running");
+
 const token = localStorage.getItem("token");
+const container = document.getElementById("albums-container");
+const form = document.getElementById("album-form");
+const submitBtn = document.getElementById("submit-btn");
 
-console.log("Token:", token);
+let editingAlbumId = null;
 
-fetch("http://localhost:5000/api/albums", {
-  method: "GET",
-  headers: {
-    Authorization: `Bearer ${token}`
-  }
-})
-  .then((response) => {
-    console.log("Status:", response.status);
-    return response.json();
-  })
-  .then((albums) => {
-    console.log("Albums:", albums);
+// LOAD ALL ALBUMS
+function loadAlbums() {
 
-    const container = document.getElementById("albums-container");
+    fetch("http://localhost:5000/api/albums", {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
 
-    albums.forEach((album) => {
-      const albumCard = document.createElement("div");
-      albumCard.classList.add("album-card");
+    .then(response => response.json())
 
-      albumCard.innerHTML = `
-        <h3>${album.title}</h3>
-        <p>Release Date: ${album.release_date}</p>
-        <p>Artist ID: ${album.artist_id}</p>
-      `;
+    .then(albums => {
 
-      container.appendChild(albumCard);
-    });
-  })
-  .catch((error) => {
-    console.error("Error:", error);
-  });
+        container.innerHTML = "";
+
+        albums.forEach(album => {
+
+            const albumCard = document.createElement("div");
+            albumCard.classList.add("album-card");
+
+            albumCard.innerHTML = `
+                <h3>${album.title}</h3>
+
+                <p><strong>Release Date:</strong> ${album.release_date.split("T")[0]}</p>
+
+                <p><strong>Artist ID:</strong> ${album.artist_id}</p>
+
+                <button class="edit-btn">Edit</button>
+                <button class="delete-btn">Delete</button>
+            `;
+
+            // EDIT
+            albumCard.querySelector(".edit-btn").addEventListener("click", () => {
+
+                editingAlbumId = album.album_id;
+
+                document.getElementById("title").value = album.title;
+                document.getElementById("release_date").value = album.release_date.split("T")[0];
+                document.getElementById("artist_id").value = album.artist_id;
+
+                submitBtn.textContent = "Update Album";
+
+            });
+
+            // DELETE
+            albumCard.querySelector(".delete-btn").addEventListener("click", () => {
+
+                const confirmDelete = confirm("Are you sure you want to delete this album?");
+
+                if (!confirmDelete) return;
+
+                fetch(`http://localhost:5000/api/albums/${album.album_id}`, {
+
+                    method: "DELETE",
+
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+
+                })
+
+                .then(response => response.json())
+
+                .then(() => {
+
+                    loadAlbums();
+
+                })
+
+                .catch(error => console.error(error));
+
+            });
+
+            container.appendChild(albumCard);
+
+        });
+
+    })
+
+    .catch(error => console.error(error));
+
+}
+
+// LOAD ALBUMS WHEN PAGE OPENS
+loadAlbums();
+
+form.addEventListener("submit", function (e) {
+
+    e.preventDefault();
+
+    const albumData = {
+
+        title: document.getElementById("title").value,
+        release_date: document.getElementById("release_date").value,
+        artist_id: document.getElementById("artist_id").value
+
+    };
+
+    // CREATE
+    if (editingAlbumId === null) {
+
+        fetch("http://localhost:5000/api/albums", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+
+            body: JSON.stringify(albumData)
+
+        })
+
+        .then(response => response.json())
+
+        .then(() => {
+
+            form.reset();
+
+            loadAlbums();
+
+        })
+
+        .catch(error => console.error(error));
+
+    }
+
+    // UPDATE
+    else {
+
+        fetch(`http://localhost:5000/api/albums/${editingAlbumId}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+
+            body: JSON.stringify(albumData)
+
+        })
+
+        .then(response => response.json())
+
+        .then(() => {
+
+            form.reset();
+
+            editingAlbumId = null;
+
+            submitBtn.textContent = "Add Album";
+
+            loadAlbums();
+
+        })
+
+        .catch(error => console.error(error));
+
+    }
+
+});
