@@ -42,7 +42,6 @@ function loadPlaylists() {
                 editingPlaylistId = playlist.playlist_id;
 
                 document.getElementById("name").value = playlist.name;
-                document.getElementById("user_id").value = playlist.user_id;
 
                 submitBtn.textContent = "Update Playlist";
 
@@ -94,8 +93,7 @@ form.addEventListener("submit", function (e) {
 
     const playlistData = {
 
-        name: document.getElementById("name").value,
-        user_id: document.getElementById("user_id").value
+        name: document.getElementById("name").value
 
     };
 

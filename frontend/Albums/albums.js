@@ -8,6 +8,38 @@ const submitBtn = document.getElementById("submit-btn");
 
 let editingAlbumId = null;
 
+// LOAD ARTISTS INTO DROPDOWN
+function loadArtistsDropdown() {
+
+    fetch("http://localhost:5000/api/artists", {
+        method: "GET",
+        headers: getAuthHeaders()
+    })
+
+    .then(response => response.json())
+
+    .then(artists => {
+
+        const artistSelect = document.getElementById("artist_id");
+
+        artistSelect.innerHTML = `<option value="">Select Artist</option>`;
+
+        artists.forEach(artist => {
+
+            artistSelect.innerHTML += `
+                <option value="${artist.artist_id}">
+                    ${artist.name}
+                </option>
+            `;
+
+        });
+
+    })
+
+    .catch(error => console.error(error));
+
+}
+
 // LOAD ALL ALBUMS
 function loadAlbums() {
 
@@ -88,7 +120,8 @@ function loadAlbums() {
 
 }
 
-// LOAD ALBUMS WHEN PAGE OPENS
+// LOAD PAGE DATA
+loadArtistsDropdown();
 loadAlbums();
 
 form.addEventListener("submit", function (e) {
@@ -125,6 +158,7 @@ form.addEventListener("submit", function (e) {
 
             form.reset();
 
+            loadArtistsDropdown();
             loadAlbums();
 
         })
@@ -159,6 +193,7 @@ form.addEventListener("submit", function (e) {
 
             submitBtn.textContent = "Add Album";
 
+            loadArtistsDropdown();
             loadAlbums();
 
         })

@@ -8,6 +8,64 @@ const submitBtn = document.getElementById("submit-btn");
 
 let editingSongId = null;
 
+// LOAD ARTISTS INTO DROPDOWN
+function loadArtistsDropdown() {
+
+    fetch("http://localhost:5000/api/artists", {
+        method: "GET",
+        headers: getAuthHeaders()
+    })
+    .then(response => response.json())
+    .then(artists => {
+
+        const artistSelect = document.getElementById("artist_id");
+
+        artistSelect.innerHTML = `<option value="">Select Artist</option>`;
+
+        artists.forEach(artist => {
+
+            artistSelect.innerHTML += `
+                <option value="${artist.artist_id}">
+                    ${artist.name}
+                </option>
+            `;
+
+        });
+
+    })
+    .catch(error => console.error(error));
+
+}
+
+// LOAD ALBUMS INTO DROPDOWN
+function loadAlbumsDropdown() {
+
+    fetch("http://localhost:5000/api/albums", {
+        method: "GET",
+        headers: getAuthHeaders()
+    })
+    .then(response => response.json())
+    .then(albums => {
+
+        const albumSelect = document.getElementById("album_id");
+
+        albumSelect.innerHTML = `<option value="">Select Album</option>`;
+
+        albums.forEach(album => {
+
+            albumSelect.innerHTML += `
+                <option value="${album.album_id}">
+                    ${album.title}
+                </option>
+            `;
+
+        });
+
+    })
+    .catch(error => console.error(error));
+
+}
+
 // LOAD SONGS
 function loadSongs() {
 
@@ -77,6 +135,9 @@ function loadSongs() {
 
 }
 
+// LOAD EVERYTHING WHEN PAGE OPENS
+loadArtistsDropdown();
+loadAlbumsDropdown();
 loadSongs();
 
 form.addEventListener("submit", function (e) {
@@ -99,7 +160,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getToken()
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(songData)
@@ -109,9 +170,12 @@ form.addEventListener("submit", function (e) {
         .then(() => {
 
             form.reset();
+            loadArtistsDropdown();
+            loadAlbumsDropdown();
             loadSongs();
 
-        });
+        })
+        .catch(error => console.error(error));
 
     } else {
 
@@ -121,7 +185,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getToken()
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(songData)
@@ -133,9 +197,13 @@ form.addEventListener("submit", function (e) {
             form.reset();
             editingSongId = null;
             submitBtn.textContent = "Add Song";
+
+            loadArtistsDropdown();
+            loadAlbumsDropdown();
             loadSongs();
 
-        });
+        })
+        .catch(error => console.error(error));
 
     }
 
