@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const authMiddleware = require("../auth/authMiddleware");
+const roleMiddleware = require("../auth/roleMiddleware");
 
 const {
     createAlbum,
@@ -11,11 +12,25 @@ const {
     deleteAlbum
 } = require("./albumController");
 
-// CRUD ROUTES
-router.post("/", authMiddleware, createAlbum);
+
+// CREATE ALBUM - ADMIN ONLY
+router.post("/", authMiddleware, roleMiddleware("admin"), createAlbum);
+
+
+// GET ALL ALBUMS - LOGGED IN USERS
 router.get("/", authMiddleware, getAllAlbums);
+
+
+// GET ONE ALBUM - LOGGED IN USERS
 router.get("/:id", authMiddleware, getAlbumById);
-router.put("/:id", authMiddleware, updateAlbum);
-router.delete("/:id", authMiddleware, deleteAlbum);
+
+
+// UPDATE ALBUM - ADMIN ONLY
+router.put("/:id", authMiddleware, roleMiddleware("admin"), updateAlbum);
+
+
+// DELETE ALBUM - ADMIN ONLY
+router.delete("/:id", authMiddleware, roleMiddleware("admin"), deleteAlbum);
+
 
 module.exports = router;

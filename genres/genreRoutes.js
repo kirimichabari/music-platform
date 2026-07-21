@@ -2,21 +2,29 @@ const express = require("express");
 const router = express.Router();
 
 const authMiddleware = require("../auth/authMiddleware");
+const roleMiddleware = require("../auth/roleMiddleware");
+
 const genreController = require("./genrecontroller");
 
-// CREATE
-router.post("/", authMiddleware, genreController.createGenre);
 
-// READ ALL
+// CREATE GENRE - ADMIN ONLY
+router.post("/", authMiddleware, roleMiddleware("admin"), genreController.createGenre);
+
+
+// READ ALL GENRES - LOGGED IN USERS
 router.get("/", authMiddleware, genreController.getAllGenres);
 
-// READ ONE
+
+// READ ONE GENRE - LOGGED IN USERS
 router.get("/:id", authMiddleware, genreController.getGenreById);
 
-// UPDATE
-router.put("/:id", authMiddleware, genreController.updateGenre);
 
-// DELETE
-router.delete("/:id", authMiddleware, genreController.deleteGenre);
+// UPDATE GENRE - ADMIN ONLY
+router.put("/:id", authMiddleware, roleMiddleware("admin"), genreController.updateGenre);
+
+
+// DELETE GENRE - ADMIN ONLY
+router.delete("/:id", authMiddleware, roleMiddleware("admin"), genreController.deleteGenre);
+
 
 module.exports = router;
