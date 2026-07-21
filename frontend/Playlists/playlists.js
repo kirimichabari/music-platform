@@ -1,6 +1,7 @@
 console.log("playlists.js is running");
 
-const token = localStorage.getItem("token");
+checkAuth();
+
 const container = document.getElementById("playlists-container");
 const form = document.getElementById("playlist-form");
 const submitBtn = document.getElementById("submit-btn");
@@ -12,9 +13,7 @@ function loadPlaylists() {
 
     fetch("http://localhost:5000/api/playlists", {
         method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+        headers: getAuthHeaders()
     })
 
     .then(response => response.json())
@@ -60,9 +59,7 @@ function loadPlaylists() {
 
                     method: "DELETE",
 
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    headers: getAuthHeaders()
 
                 })
 
@@ -111,7 +108,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(playlistData)
@@ -141,7 +138,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(playlistData)

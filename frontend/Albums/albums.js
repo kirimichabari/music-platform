@@ -1,6 +1,7 @@
 console.log("albums.js is running");
 
-const token = localStorage.getItem("token");
+checkAuth();
+
 const container = document.getElementById("albums-container");
 const form = document.getElementById("album-form");
 const submitBtn = document.getElementById("submit-btn");
@@ -12,9 +13,7 @@ function loadAlbums() {
 
     fetch("http://localhost:5000/api/albums", {
         method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+        headers: getAuthHeaders()
     })
 
     .then(response => response.json())
@@ -63,9 +62,7 @@ function loadAlbums() {
 
                     method: "DELETE",
 
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    headers: getAuthHeaders()
 
                 })
 
@@ -115,7 +112,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(albumData)
@@ -145,7 +142,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(albumData)

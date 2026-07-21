@@ -1,6 +1,7 @@
 console.log("artists.js is running");
 
-const token = localStorage.getItem("token");
+checkAuth();
+
 const container = document.getElementById("artists-container");
 const form = document.getElementById("artist-form");
 const submitBtn = document.getElementById("submit-btn");
@@ -12,9 +13,7 @@ function loadArtists() {
 
     fetch("http://localhost:5000/api/artists", {
         method: "GET",
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+        headers: getAuthHeaders()
     })
 
     .then(response => response.json())
@@ -63,9 +62,7 @@ function loadArtists() {
 
                     method: "DELETE",
 
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    headers: getAuthHeaders()
 
                 })
 
@@ -115,7 +112,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(artistData)
@@ -145,7 +142,7 @@ form.addEventListener("submit", function (e) {
 
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${token}`
+                ...getAuthHeaders()
             },
 
             body: JSON.stringify(artistData)
