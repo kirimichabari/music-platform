@@ -2,6 +2,10 @@ console.log("songs.js is running");
 
 checkAuth();
 
+if (!isAdmin()) {
+    document.getElementById("song-form").style.display = "none";
+}
+
 const container = document.getElementById("songs-container");
 const form = document.getElementById("song-form");
 const submitBtn = document.getElementById("submit-btn");
@@ -90,41 +94,47 @@ function loadSongs() {
 
                 <p><strong>Release Date:</strong> ${song.release_date.split("T")[0]}</p>
 
-                <p><strong>Artist ID:</strong> ${song.artist_id}</p>
+                <p><strong>Artist:</strong> ${song.Artist ? song.Artist.name : "Unknown Artist"}</p>
 
-                <p><strong>Album ID:</strong> ${song.album_id}</p>
+                <p><strong>Album:</strong> ${song.Album ? song.Album.title : "No Album"}</p>
 
-                <button class="edit-btn">Edit</button>
-                <button class="delete-btn">Delete</button>
+                ${isAdmin() ? `
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                ` : ""}
             `;
 
-            songCard.querySelector(".edit-btn").addEventListener("click", () => {
+            if (isAdmin()) {
 
-                editingSongId = song.song_id;
+                songCard.querySelector(".edit-btn").addEventListener("click", () => {
 
-                document.getElementById("title").value = song.title;
-                document.getElementById("duration").value = song.duration;
-                document.getElementById("release_date").value = song.release_date.split("T")[0];
-                document.getElementById("artist_id").value = song.artist_id;
-                document.getElementById("album_id").value = song.album_id;
+                    editingSongId = song.song_id;
 
-                submitBtn.textContent = "Update Song";
+                    document.getElementById("title").value = song.title;
+                    document.getElementById("duration").value = song.duration;
+                    document.getElementById("release_date").value = song.release_date.split("T")[0];
+                    document.getElementById("artist_id").value = song.artist_id;
+                    document.getElementById("album_id").value = song.album_id;
 
-            });
+                    submitBtn.textContent = "Update Song";
 
-            songCard.querySelector(".delete-btn").addEventListener("click", () => {
+                });
 
-                if (!confirm("Are you sure you want to delete this song?")) return;
+                songCard.querySelector(".delete-btn").addEventListener("click", () => {
 
-                fetch(`http://localhost:5000/api/songs/${song.song_id}`, {
-                    method: "DELETE",
-                    headers: getAuthHeaders()
-                })
-                .then(response => response.json())
-                .then(() => loadSongs())
-                .catch(error => console.error(error));
+                    if (!confirm("Are you sure you want to delete this song?")) return;
 
-            });
+                    fetch(`http://localhost:5000/api/songs/${song.song_id}`, {
+                        method: "DELETE",
+                        headers: getAuthHeaders()
+                    })
+                    .then(response => response.json())
+                    .then(() => loadSongs())
+                    .catch(error => console.error(error));
+
+                });
+
+            }
 
             container.appendChild(songCard);
 

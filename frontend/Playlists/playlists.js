@@ -30,11 +30,21 @@ function loadPlaylists() {
             playlistCard.innerHTML = `
                 <h3>${playlist.name}</h3>
 
-                <p><strong>User ID:</strong> ${playlist.user_id}</p>
+                <p><strong>Created by:</strong> ${playlist.User ? playlist.User.name : "Unknown user"}</p>
+
+                <p><strong>Songs:</strong></p>
+                <ul>
+                    ${
+                        playlist.Songs && playlist.Songs.length > 0
+                        ? playlist.Songs.map(song => `<li>${song.title}</li>`).join("")
+                        : "<li>No songs added</li>"
+                    }
+                </ul>
 
                 <button class="edit-btn">Edit</button>
                 <button class="delete-btn">Delete</button>
             `;
+
 
             // EDIT
             playlistCard.querySelector(".edit-btn").addEventListener("click", () => {
@@ -46,6 +56,7 @@ function loadPlaylists() {
                 submitBtn.textContent = "Update Playlist";
 
             });
+
 
             // DELETE
             playlistCard.querySelector(".delete-btn").addEventListener("click", () => {
@@ -74,6 +85,7 @@ function loadPlaylists() {
 
             });
 
+
             container.appendChild(playlistCard);
 
         });
@@ -84,8 +96,10 @@ function loadPlaylists() {
 
 }
 
+
 // LOAD PLAYLISTS WHEN PAGE OPENS
 loadPlaylists();
+
 
 form.addEventListener("submit", function (e) {
 
@@ -96,6 +110,7 @@ form.addEventListener("submit", function (e) {
         name: document.getElementById("name").value
 
     };
+
 
     // CREATE
     if (editingPlaylistId === null) {
@@ -126,6 +141,7 @@ form.addEventListener("submit", function (e) {
         .catch(error => console.error(error));
 
     }
+
 
     // UPDATE
     else {

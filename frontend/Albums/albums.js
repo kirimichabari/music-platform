@@ -2,6 +2,10 @@ console.log("albums.js is running");
 
 checkAuth();
 
+if (!isAdmin()) {
+    document.getElementById("album-form").style.display = "none";
+}
+
 const container = document.getElementById("albums-container");
 const form = document.getElementById("album-form");
 const submitBtn = document.getElementById("submit-btn");
@@ -64,51 +68,57 @@ function loadAlbums() {
 
                 <p><strong>Release Date:</strong> ${album.release_date.split("T")[0]}</p>
 
-                <p><strong>Artist ID:</strong> ${album.artist_id}</p>
+                <p><strong>Artist:</strong> ${album.Artist ? album.Artist.name : "Unknown Artist"}</p>
 
-                <button class="edit-btn">Edit</button>
-                <button class="delete-btn">Delete</button>
+                ${isAdmin() ? `
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                ` : ""}
             `;
 
-            // EDIT
-            albumCard.querySelector(".edit-btn").addEventListener("click", () => {
+            if (isAdmin()) {
 
-                editingAlbumId = album.album_id;
+                // EDIT
+                albumCard.querySelector(".edit-btn").addEventListener("click", () => {
 
-                document.getElementById("title").value = album.title;
-                document.getElementById("release_date").value = album.release_date.split("T")[0];
-                document.getElementById("artist_id").value = album.artist_id;
+                    editingAlbumId = album.album_id;
 
-                submitBtn.textContent = "Update Album";
+                    document.getElementById("title").value = album.title;
+                    document.getElementById("release_date").value = album.release_date.split("T")[0];
+                    document.getElementById("artist_id").value = album.artist_id;
 
-            });
+                    submitBtn.textContent = "Update Album";
 
-            // DELETE
-            albumCard.querySelector(".delete-btn").addEventListener("click", () => {
+                });
 
-                const confirmDelete = confirm("Are you sure you want to delete this album?");
+                // DELETE
+                albumCard.querySelector(".delete-btn").addEventListener("click", () => {
 
-                if (!confirmDelete) return;
+                    const confirmDelete = confirm("Are you sure you want to delete this album?");
 
-                fetch(`http://localhost:5000/api/albums/${album.album_id}`, {
+                    if (!confirmDelete) return;
 
-                    method: "DELETE",
+                    fetch(`http://localhost:5000/api/albums/${album.album_id}`, {
 
-                    headers: getAuthHeaders()
+                        method: "DELETE",
 
-                })
+                        headers: getAuthHeaders()
 
-                .then(response => response.json())
+                    })
 
-                .then(() => {
+                    .then(response => response.json())
 
-                    loadAlbums();
+                    .then(() => {
 
-                })
+                        loadAlbums();
 
-                .catch(error => console.error(error));
+                    })
 
-            });
+                    .catch(error => console.error(error));
+
+                });
+
+            }
 
             container.appendChild(albumCard);
 

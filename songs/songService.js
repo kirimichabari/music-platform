@@ -1,4 +1,6 @@
 const Song = require("./song.model");
+const Artist = require("../artists/artist.model");
+const Album = require("../albums/album.model");
 
 // CREATE SONG
 const createSong = async (data) => {
@@ -7,12 +9,38 @@ const createSong = async (data) => {
 
 // GET ALL SONGS
 const getAllSongs = async () => {
-    return await Song.findAll();
+    return await Song.findAll({
+        include: [
+            {
+                model: Artist,
+                as: "Artist",
+                attributes: ["artist_id", "name"]
+            },
+            {
+                model: Album,
+                as: "Album",
+                attributes: ["album_id", "title"]
+            }
+        ]
+    });
 };
 
 // GET ONE SONG
 const getSongById = async (id) => {
-    return await Song.findByPk(id);
+    return await Song.findByPk(id, {
+        include: [
+            {
+                model: Artist,
+                as: "Artist",
+                attributes: ["artist_id", "name"]
+            },
+            {
+                model: Album,
+                as: "Album",
+                attributes: ["album_id", "title"]
+            }
+        ]
+    });
 };
 
 // UPDATE SONG
@@ -21,7 +49,21 @@ const updateSong = async (id, data) => {
     if (!song) return null;
 
     await song.update(data);
-    return song;
+
+    return await Song.findByPk(id, {
+        include: [
+            {
+                model: Artist,
+                as: "Artist",
+                attributes: ["artist_id", "name"]
+            },
+            {
+                model: Album,
+                as: "Album",
+                attributes: ["album_id", "title"]
+            }
+        ]
+    });
 };
 
 // DELETE SONG

@@ -22,3 +22,35 @@ function checkAuth() {
     }
 
 }
+
+// Decode JWT payload
+function getUser() {
+
+    const token = getToken();
+
+    if (!token) return null;
+
+    try {
+
+        const payload = JSON.parse(atob(token.split(".")[1]));
+
+        return payload;
+
+    } catch (error) {
+
+        console.error("Invalid token");
+
+        return null;
+
+    }
+
+}
+
+// Check if logged-in user is an admin
+function isAdmin() {
+
+    const user = getUser();
+
+    return user && user.role === "admin";
+
+}

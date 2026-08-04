@@ -1,4 +1,5 @@
 const Album = require("./album.model");
+const Artist = require("../artists/artist.model");
 
 // CREATE ALBUM
 const createAlbum = async (data) => {
@@ -7,12 +8,26 @@ const createAlbum = async (data) => {
 
 // GET ALL ALBUMS
 const getAllAlbums = async () => {
-    return await Album.findAll();
+    return await Album.findAll({
+        include: [
+            {
+                model: Artist,
+                attributes: ["artist_id", "name"]
+            }
+        ]
+    });
 };
 
 // GET ONE ALBUM
 const getAlbumById = async (id) => {
-    return await Album.findByPk(id);
+    return await Album.findByPk(id, {
+        include: [
+            {
+                model: Artist,
+                attributes: ["artist_id", "name"]
+            }
+        ]
+    });
 };
 
 // UPDATE ALBUM
@@ -21,7 +36,15 @@ const updateAlbum = async (id, data) => {
     if (!album) return null;
 
     await album.update(data);
-    return album;
+
+    return await Album.findByPk(id, {
+        include: [
+            {
+                model: Artist,
+                attributes: ["artist_id", "name"]
+            }
+        ]
+    });
 };
 
 // DELETE ALBUM

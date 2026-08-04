@@ -2,6 +2,10 @@ console.log("artists.js is running");
 
 checkAuth();
 
+if (!isAdmin()) {
+    document.getElementById("artist-form").style.display = "none";
+}
+
 const container = document.getElementById("artists-container");
 const form = document.getElementById("artist-form");
 const submitBtn = document.getElementById("submit-btn");
@@ -34,49 +38,55 @@ function loadArtists() {
 
                 <p><strong>Bio:</strong> ${artist.bio}</p>
 
-                <button class="edit-btn">Edit</button>
-                <button class="delete-btn">Delete</button>
+                ${isAdmin() ? `
+                    <button class="edit-btn">Edit</button>
+                    <button class="delete-btn">Delete</button>
+                ` : ""}
             `;
 
-            // EDIT
-            artistCard.querySelector(".edit-btn").addEventListener("click", () => {
+            if (isAdmin()) {
 
-                editingArtistId = artist.artist_id;
+                // EDIT
+                artistCard.querySelector(".edit-btn").addEventListener("click", () => {
 
-                document.getElementById("name").value = artist.name;
-                document.getElementById("country").value = artist.country;
-                document.getElementById("bio").value = artist.bio;
+                    editingArtistId = artist.artist_id;
 
-                submitBtn.textContent = "Update Artist";
+                    document.getElementById("name").value = artist.name;
+                    document.getElementById("country").value = artist.country;
+                    document.getElementById("bio").value = artist.bio;
 
-            });
+                    submitBtn.textContent = "Update Artist";
 
-            // DELETE
-            artistCard.querySelector(".delete-btn").addEventListener("click", () => {
+                });
 
-                const confirmDelete = confirm("Are you sure you want to delete this artist?");
+                // DELETE
+                artistCard.querySelector(".delete-btn").addEventListener("click", () => {
 
-                if (!confirmDelete) return;
+                    const confirmDelete = confirm("Are you sure you want to delete this artist?");
 
-                fetch(`http://localhost:5000/api/artists/${artist.artist_id}`, {
+                    if (!confirmDelete) return;
 
-                    method: "DELETE",
+                    fetch(`http://localhost:5000/api/artists/${artist.artist_id}`, {
 
-                    headers: getAuthHeaders()
+                        method: "DELETE",
 
-                })
+                        headers: getAuthHeaders()
 
-                .then(response => response.json())
+                    })
 
-                .then(() => {
+                    .then(response => response.json())
 
-                    loadArtists();
+                    .then(() => {
 
-                })
+                        loadArtists();
 
-                .catch(error => console.error(error));
+                    })
 
-            });
+                    .catch(error => console.error(error));
+
+                });
+
+            }
 
             container.appendChild(artistCard);
 
