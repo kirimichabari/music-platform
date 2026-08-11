@@ -1,38 +1,71 @@
-// Returns the saved JWT token
+
+// ==========================================
+// GET SAVED JWT TOKEN
+// ==========================================
+
 function getToken() {
     return localStorage.getItem("token");
 }
 
-// Returns the authorization header
+
+// ==========================================
+// GET AUTHORIZATION HEADERS
+// ==========================================
+
 function getAuthHeaders() {
     return {
         Authorization: `Bearer ${getToken()}`
     };
 }
 
-// Redirects user to login if not authenticated
+
+// ==========================================
+// CHECK AUTHENTICATION
+// ==========================================
+
 function checkAuth() {
 
     if (!getToken()) {
 
         alert("Please login first.");
 
-        window.location.href = "../Login/login.html";
+        const currentPath = window.location.pathname;
 
+        // Pages inside frontend subfolders
+        if (
+            currentPath.includes("/Songs/") ||
+            currentPath.includes("/Albums/") ||
+            currentPath.includes("/Artists/") ||
+            currentPath.includes("/Playlists/")
+        ) {
+            window.location.href = "../login.html";
+        }
+
+        // Pages directly inside frontend
+        else {
+            window.location.href = "login.html";
+        }
     }
-
 }
 
-// Decode JWT payload
+
+// ==========================================
+// DECODE JWT PAYLOAD
+// ==========================================
+
 function getUser() {
 
     const token = getToken();
 
-    if (!token) return null;
+    if (!token) {
+        return null;
+    }
 
     try {
 
-        const payload = JSON.parse(atob(token.split(".")[1]));
+        const payload = JSON.parse(
+            atob(token.split(".")[1])
+        );
 
         return payload;
 
@@ -41,16 +74,17 @@ function getUser() {
         console.error("Invalid token");
 
         return null;
-
     }
-
 }
 
-// Check if logged-in user is an admin
+
+// ==========================================
+// CHECK IF USER IS ADMIN
+// ==========================================
+
 function isAdmin() {
 
     const user = getUser();
 
     return user && user.role === "admin";
-
 }
